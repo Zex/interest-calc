@@ -6,15 +6,17 @@
 
 import sys
 
-#interest_list = (0, 3.3, 4.13, 4.675, 0, 5.225)
-interest_list = (0, 3.3, 4.13, 4.25, 0, 4.75)
+interest_list = (0, 3.3, 4.13, 4.675, 0, 5.225)
+#interest_list = (0, 3.3, 4.13, 4.25, 0, 4.75)
 
 def profile_calc(principal, y, interest_index):
 
 	if y == 0:
 		return round((1+interest_index*interest_list[interest_index]/100)*principal, 2)
+	elif y / interest_index < 2:
+		return round(profile_calc(principal, y-interest_index, interest_index), 2)
 	else:
-		return round(profile_calc((1+interest_index*interest_list[interest_index]/100)*principal, y-interest_index, interest_index)*(1+interest_index*interest_list[interest_index]/100), 2)
+		return round(profile_calc(principal, y-interest_index, interest_index)*(1+interest_index*interest_list[interest_index]/100), 2)
 
 
 def interest_1235(argv):	
@@ -40,6 +42,7 @@ if __name__ == "__main__":
 		cmb_fd = open("combinations")
 		for line in cmb_fd:
 			if len(line) < 4: continue
+			if line[0] == '#': continue
 			argvv.append(tuple(map(lambda x : int(x), line.split('\n')[0].split('|'))))
 	
 	except Exception as e:
@@ -67,6 +70,10 @@ if __name__ == "__main__":
 	
 	finally:
 		sys.exit()
+
+
+
+
 
 
 
